@@ -1847,10 +1847,10 @@ escodegen@^1.14.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-standard@^11.0.0-beta.0:
-  version "11.0.0"
-  resolved "https://registry.npm.taobao.org/eslint-config-standard/download/eslint-config-standard-11.0.0.tgz#87ee0d3c9d95382dc761958cbb23da9eea31e0ba"
-  integrity sha1-h+4NPJ2VOC3HYZWMuyPanuox4Lo=
+eslint-config-standard@^12.0.0-alpha.0:
+  version "12.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-12.0.0-alpha.0.tgz#f21f864ba7f52f2eb98670c94b03322186ac18a5"
+  integrity sha512-KzXH+zyKqOfqTH01wB0jz9QNwbXKhHuCF6KsMxK411PU8I+8N8F4HvpkYPccTYuNCJyuISoBslz/19/0x10y6g==
 
 eslint-import-resolver-node@^0.3.2:
   version "0.3.3"
