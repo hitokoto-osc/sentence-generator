@@ -2,7 +2,7 @@
 const database = require('./database')
 const winston = require('winston')
 const nconf = require('nconf')
-const diff = require('diff')
+// const diff = require('diff')
 const _ = require('lodash')
 const semver = require('semver')
 const colors = require('colors/safe')
@@ -36,6 +36,7 @@ if (fs.existsSync(versionFile)) {
   // 迭代读取句子分类数据
   for (const category of currentCategoriesList) {
     categoriesData[category.key] = JSON.parse(fs.readFileSync(path.join(workdir, category.path)))
+    console.log(categoriesData[category.key].length)
   }
 } else {
   versionData = {
@@ -57,12 +58,12 @@ async function checkUpdate () {
     const conn = await database.getConnection()
     // 获得一言分类列表
     let [rows] = await conn.query('SELECT * FROM `hitokoto_categories`')
-    if (currentCategoriesList.length === 0 || diff.diffArrays(currentCategoriesList, rows).length > 1) {
+    rows.map(v => {
+      v.path = `./sentences/${v.key}.json`
+      return v
+    })
+    if (currentCategoriesList.length === 0 || JSON.stringify(currentCategoriesList) !== JSON.stringify(rows)) {
       currentCategoriesList = rows
-      currentCategoriesList.map(v => {
-        v.path = `./sentences/${v.key}.json`
-        return v
-      })
       isUpdate = true
       // 更新数据
       fs.writeFileSync(path.join(workdir, versionData.categories.path), JSON.stringify(currentCategoriesList))
@@ -86,7 +87,7 @@ async function checkUpdate () {
       // 按分类比对更新
       for (const category of currentCategoriesList) {
         const {key} = category
-        if (!categoriesData[key] || categoriesData[key].length === 0 || diff.diffArrays(categoriesData[key], tmp[key]).length > 1) {
+        if (!categoriesData[key] || categoriesData[key].length === 0 || JSON.stringify(categoriesData[key]) !== JSON.stringify(tmp[key])) {
           isUpdate = true
           categoriesData[key] = tmp[key]
           let categoryVersion = _.find(versionData.sentences, { key })
@@ -109,9 +110,9 @@ async function checkUpdate () {
         }
       }
     }
-    winston.verbose('文件生成完毕，开始发布 GIT 版本。')
     // 调用 Git，生成新的版本号
     if (isUpdate) {
+      winston.verbose('文件生成完毕，开始发布 GIT 版本。')
       versionData.bundle_version = semver.inc(versionData.bundle_version, 'patch')
       versionData.updated_at = Date.now()
       fs.writeFileSync(path.join(versionFile), JSON.stringify(versionData))
@@ -124,6 +125,8 @@ async function checkUpdate () {
         git.push(),
         git.pushTags()
       ])
+    } else {
+      winston.verbose('文件内容无需更新。')
     }
     winston.verbose('更新操作执行完毕。')
   } catch (e) {
