@@ -1,0 +1,9 @@
+node_modules/
+logs/*.log
+.nyc_output/
+coverage/
+*.log
+*.dll
+config.yml
+config.json
+config.ini
