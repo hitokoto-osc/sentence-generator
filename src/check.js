@@ -66,9 +66,9 @@ async function checkUpdate () {
       currentCategoriesList = rows
       isUpdate = true
       // 更新数据
-      fs.writeFileSync(path.join(workdir, versionData.categories.path), JSON.stringify(currentCategoriesList))
+      fs.writeFileSync(path.join(workdir, versionData.categories.path), JSON.stringify(currentCategoriesList, null, 2))
       versionData.categories.timestamp = Date.now()
-      fs.writeFileSync(path.join(workdir, './version.json'), JSON.stringify(versionData))
+      fs.writeFileSync(path.join(workdir, './version.json'), JSON.stringify(versionData, null, 2))
     }
 
     // 获得一言句子集合
@@ -105,8 +105,8 @@ async function checkUpdate () {
           if (!fs.existsSync(path.join(workdir, categoryVersion.path, '../'))) {
             fs.mkdirSync(path.join(workdir, categoryVersion.path, '../'))
           }
-          fs.writeFileSync(path.join(workdir, categoryVersion.path), JSON.stringify(tmp[key]))
-          fs.writeFileSync(path.join(versionFile), JSON.stringify(versionData))
+          fs.writeFileSync(path.join(workdir, categoryVersion.path), JSON.stringify(tmp[key], null, 2))
+          fs.writeFileSync(path.join(versionFile), JSON.stringify(versionData, null, 2))
         }
       }
     }
@@ -115,7 +115,7 @@ async function checkUpdate () {
       winston.verbose('文件生成完毕，开始发布 GIT 版本。')
       versionData.bundle_version = semver.inc(versionData.bundle_version, 'patch')
       versionData.updated_at = Date.now()
-      fs.writeFileSync(path.join(versionFile), JSON.stringify(versionData))
+      fs.writeFileSync(path.join(versionFile), JSON.stringify(versionData, null, 2))
 
       // GIT 操作
       await git.add('*')
