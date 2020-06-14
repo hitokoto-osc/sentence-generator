@@ -72,7 +72,7 @@ async function checkUpdate () {
     }
 
     // 获得一言句子集合
-    [rows] = await conn.query('SELECT * FROM `hitokoto_sentence`')
+    [rows] = await conn.query('SELECT `id`, `uuid`, `hitokoto`, `type`, `from`, `from_who`, `creator`, `creator_uid`, `reviewer`,`commit_from`, `created_at` FROM `hitokoto_sentence`')
     if (rows.length !== sentenceCount) { // TODO:  寻找更经济、全面的比对算法。尽管如果碰巧删除的句子数目与新增句子数目相等时此规则将不合预期忽略掉变化，但目前这是最经济的做法。
     // 建立数据集缓存
       const tmp = {}
