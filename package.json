@@ -51,7 +51,7 @@
     "nconf-yaml": "^1.0.2",
     "node-schedule": "^1.3.2",
     "semver": "^7.3.2",
-    "simple-git": "^2.13.1",
+    "simple-git": "^2.15.0",
     "uuid": "^8.1.0",
     "winston": "^2.4.5"
   }
