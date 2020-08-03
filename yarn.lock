@@ -4730,10 +4730,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.npm.taobao.org/signal-exit/download/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha1-oUEMLt2PB3sItOJTyOrPyvBXRhw=
 
-simple-git@^2.13.1:
-  version "2.13.1"
-  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-2.13.1.tgz#8a70c6ae7110736b50b2a456ed9c9e1addbbacf2"
-  integrity sha512-8znuezwuyfGRZMltXdufrp7uE5+XFixJQAJBkAzG8N2++nz0yD1ZgiiPdZOCtDTXNOzCv/E9HdIA92LhgwHCeg==
+simple-git@^2.17.0:
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-2.17.0.tgz#541205913734018d32d051af847ad9fec2f95901"
+  integrity sha512-l2F16fJvHWSx+E1C8WduwpNDfqf+JDD8nsEaD5szUZlbz5Y6paSnR4wlGxIa6Mr6I4kl3F9QmTaPIQjSxlcafA==
   dependencies:
     "@kwsites/file-exists" "^1.1.1"
     "@kwsites/promise-deferred" "^1.1.1"
