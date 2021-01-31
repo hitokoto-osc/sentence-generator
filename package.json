@@ -47,7 +47,7 @@
     "diff": "4.0.2",
     "lodash": "4.17.19",
     "mysql2": "2.2.5",
-    "nconf": "0.10.0",
+    "nconf": "0.11.2",
     "nconf-yaml": "1.0.2",
     "node-schedule": "1.3.2",
     "semver": "7.3.2",
