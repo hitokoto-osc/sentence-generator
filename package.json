@@ -1,58 +1,34 @@
 {
   "name": "hitokoto-sentence-generator",
-  "version": "1.0.0",
-  "description": "一言句子集生成器",
-  "main": "core.js",
-  "engines": {
-    "node": ">=12"
-  },
-  "scripts": {
-    "start": "node core.js",
-    "test": "jest"
-  },
+  "description": "A lightweight and maintainable sentences generator tool for v1 spec.",
   "repository": "https://github.com/hitokoto-osc/hitokoto-sentence-generator",
   "author": "a632079 <a632079@qq.com>",
   "license": "MIT",
-  "private": true,
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+  "scripts": {
+    "postinstall": "husky install",
+    "commit": "git-cz",
+    "lint-md": "remark ."
   },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix"
+  "remarkConfig": {
+    "plugins": [
+      "remark-preset-lint-recommended"
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "8.3.5",
-    "@commitlint/config-conventional": "9.1.1",
-    "eslint": "7.6.0",
-    "eslint-config-standard": "14.1.1",
-    "eslint-plugin-import": "2.20.2",
-    "eslint-plugin-jest": "23.13.2",
-    "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-standard": "4.0.1",
-    "husky": "4.2.5",
-    "jest": "26.0.1",
-    "lint-staged": "10.2.11"
+    "@commitlint/cli": "12.1.1",
+    "@commitlint/config-conventional": "12.1.1",
+    "@commitlint/prompt": "12.1.1",
+    "@commitlint/prompt-cli": "12.1.1",
+    "commitizen": "4.2.3",
+    "cz-conventional-changelog": "3.3.0",
+    "husky": "6.0.0",
+    "lint-staged": "10.5.4",
+    "remark-cli": "9.0.0",
+    "remark-preset-lint-recommended": "5.0.0"
   },
-  "dependencies": {
-    "async": "3.2.0",
-    "axios": "0.20.0",
-    "colors": "1.4.0",
-    "cron": "1.8.2",
-    "diff": "4.0.2",
-    "lodash": "4.17.19",
-    "mysql2": "2.2.5",
-    "nconf": "0.10.0",
-    "nconf-yaml": "1.0.2",
-    "node-schedule": "1.3.2",
-    "semver": "7.3.2",
-    "simple-git": "2.13.1",
-    "uuid": "8.3.1",
-    "winston": "2.4.5"
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/@commitlint/prompt"
+    }
   }
 }
