@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/hitokoto-osc/hitokoto-sentence-generator/database"
 	"github.com/hitokoto-osc/hitokoto-sentence-generator/logging"
 	"github.com/hitokoto-osc/hitokoto-sentence-generator/task"
 	"os"
@@ -17,6 +18,10 @@ var startCmd = &cobra.Command{
 It will sync dataset and generate bundle.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		checkLockFile()
+		err := database.Connect()
+		if err != nil {
+			logging.Logger.Fatal(err.Error())
+		}
 		task.Start()
 	},
 }

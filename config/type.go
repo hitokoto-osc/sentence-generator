@@ -1,41 +1,41 @@
 package config
 
 type core struct {
-	Interval         int // Sync interval
-	RemoteRepository string
-	Workdir          string
+	Interval         int    `mapstructure:"interval"` // Sync interval
+	RemoteRepository string `mapstructure:"remote_repository"`
+	Workdir          string `mapstructure:"workdir"`
 }
 
 type database struct {
-	Driver             string
-	Host               string
-	Port               int
-	User               string
-	Password           string
-	Database           string
-	Charset            string
-	CategoryTableName  string
-	SentencesTableName string
+	Driver             string `mapstructure:"driver"`
+	Host               string `mapstructure:"host"`
+	Port               int    `mapstructure:"port"`
+	User               string `mapstructure:"user"`
+	Password           string `mapstructure:"password"`
+	Database           string `mapstructure:"database"`
+	Charset            string `mapstructure:"charset"`
+	CategoryTableName  string `mapstructure:"category_table_name"`
+	SentencesTableName string `mapstructure:"sentences_table_name"`
 }
 
 type git struct {
-	Name   string
-	Email  string
-	Branch string
-	Driver string
-	SSH    gitSSH
-	HTTP   gitHTTP
+	Name   string  `mapstructure:"name"`
+	Email  string  `mapstructure:"email"`
+	Branch string  `mapstructure:"branch"`
+	Driver string  `mapstructure:"driver"`
+	SSH    gitSSH  `mapstructure:"ssh"`
+	HTTP   gitHTTP `mapstructure:"http"`
 }
 
 type gitSSH struct {
-	PrivateKey string
-	Password   string
-	User       string
+	PrivateKey string `mapstructure:"private_key"`
+	Password   string `mapstructure:"password"`
+	User       string `mapstructure:"user"`
 }
 
 type gitHTTP struct {
-	User     string
-	Password string
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"password"`
 }
 
 // Core config field

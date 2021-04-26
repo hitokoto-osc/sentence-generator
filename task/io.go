@@ -3,6 +3,7 @@ package task
 import (
 	"encoding/json"
 	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
+	"github.com/hitokoto-osc/hitokoto-sentence-generator/database"
 	"github.com/hitokoto-osc/hitokoto-sentence-generator/utils"
 	"github.com/pkg/errors"
 	"os"
@@ -22,11 +23,12 @@ func getCurrentVersionData() (result *utils.VersionData, err error) {
 	if err != nil {
 		return nil, err
 	}
+	result = &utils.VersionData{} // init
 	err = json.Unmarshal(data, result)
 	return
 }
 
-func getCurrentCategoriesList(version *utils.VersionData) (result *categoryUnitCollection, err error) {
+func getCurrentCategoriesList(version *utils.VersionData) (result *utils.CategoryUnitCollection, err error) {
 	if version == nil {
 		return nil, errors.New("version is nil")
 	}
@@ -35,13 +37,38 @@ func getCurrentCategoriesList(version *utils.VersionData) (result *categoryUnitC
 	if err != nil {
 		return nil, err
 	}
+	result = &utils.CategoryUnitCollection{} // init
 	err = json.Unmarshal(data, result)
 	return
 }
 
-type bundleSentenceCollection = []bundleSentence
+type bundleSentenceCollection []bundleSentence
 
-func getCurrentSentencesMap(categoriesList *categoryUnitCollection) (collection *map[string]bundleSentenceCollection, total int, err error) {
+// DeepCopy deep copy from source
+func (p bundleSentenceCollection) DeepCopy(collection bundleSentenceCollection) bundleSentenceCollection {
+	tmp := bundleSentenceCollection{}
+	for _, v := range collection {
+		tmp = append(tmp, bundleSentence{
+			Sentence: database.Sentence{
+				ID:         v.ID,
+				UUID:       v.UUID,
+				Hitokoto:   v.Hitokoto,
+				Type:       v.Type,
+				From:       v.From,
+				FromWho:    v.FromWho,
+				Creator:    v.Creator,
+				CreatorUID: v.CreatorUID,
+				Reviewer:   v.Reviewer,
+				CommitFrom: v.CommitFrom,
+				CreatedAt:  v.CreatedAt,
+			},
+			Length: v.Length,
+		})
+	}
+	return tmp
+}
+
+func getCurrentSentencesMap(categoriesList *utils.CategoryUnitCollection) (collection *map[string]bundleSentenceCollection, total int, err error) {
 	if categoriesList == nil {
 		return nil, 0, errors.New("categoriesList is nil")
 	}

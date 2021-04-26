@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"github.com/blang/semver/v4"
+	"github.com/hitokoto-osc/hitokoto-sentence-generator/database"
 )
 
 // SentencesUnit  is a unit of VersionData SentencesUnitCollection
@@ -25,6 +26,23 @@ type VersionData struct {
 	Sentences SentencesUnitCollection `json:"sentences"`
 }
 
+// DeepCopy deep copy from source
+func (v VersionData) DeepCopy(data VersionData) VersionData {
+	return VersionData{
+		ProtocolVersion: data.ProtocolVersion,
+		BundleVersion:   data.BundleVersion,
+		UpdatedAt:       data.UpdatedAt,
+		Categories: struct {
+			Path      string `json:"path"`
+			Timestamp int64  `json:"timestamp"`
+		}{
+			Path:      data.Categories.Path,
+			Timestamp: data.Categories.Timestamp,
+		},
+		Sentences: SentencesUnitCollection{}.DeepCopy(data.Sentences),
+	}
+}
+
 // StepVersion will increase patch version
 func (v *VersionData) StepVersion() error {
 	version := semver.MustParse(v.BundleVersion)
@@ -36,8 +54,22 @@ func (v *VersionData) StepVersion() error {
 }
 
 // UpdateCategoriesRecord will update timestamp in categories field and updated_at field
-func (v *VersionData) UpdateCategoriesRecord() {
+func (v *VersionData) UpdateCategoriesRecord(categoriesData CategoryUnitCollection) {
 	ts := GetMillionSecondTimestamp()
+	tmp := SentencesUnitCollection{}
+	for _, c := range categoriesData {
+		if unit, ok := v.Sentences.Find(c.Key); !ok || unit.Name != c.Name || unit.Path != c.Path {
+			tmp = append(tmp, SentencesUnit{
+				Name:      c.Name,
+				Key:       c.Key,
+				Path:      c.Path,
+				Timestamp: ts,
+			})
+		} else {
+			tmp = append(tmp, *unit)
+		}
+	}
+	v.Sentences = tmp
 	v.Categories.Timestamp = ts
 	v.UpdatedAt = ts
 }
@@ -46,7 +78,7 @@ func (v *VersionData) UpdateCategoriesRecord() {
 func (v *VersionData) UpdateSentenceRecord(categoryKey string) error {
 	c, ok := v.Sentences.Find(categoryKey)
 	if !ok {
-		return fmt.Errorf("The key %s is not exist", categoryKey)
+		return fmt.Errorf("the key %s is not exist", categoryKey)
 	}
 	ts := GetMillionSecondTimestamp()
 	c.Timestamp = ts
@@ -57,11 +89,25 @@ func (v *VersionData) UpdateSentenceRecord(categoryKey string) error {
 // SentencesUnitCollection is a collection of SentencesUnit
 type SentencesUnitCollection []SentencesUnit
 
+// DeepCopy deep copy from source
+func (c SentencesUnitCollection) DeepCopy(s SentencesUnitCollection) SentencesUnitCollection {
+	tmp := SentencesUnitCollection{}
+	for _, v := range s {
+		tmp = append(tmp, SentencesUnit{
+			Name:      v.Name,
+			Key:       v.Key,
+			Path:      v.Path,
+			Timestamp: v.Timestamp,
+		})
+	}
+	return tmp
+}
+
 // Update will update the timestamp of specific SentencesUnit
 func (c *SentencesUnitCollection) Update(key string) error {
 	s, ok := c.Find(key)
 	if !ok {
-		return fmt.Errorf("The key %s is not exist", key)
+		return fmt.Errorf("the key %s is not exist", key)
 	}
 	s.Timestamp = GetMillionSecondTimestamp()
 	return nil
@@ -75,4 +121,42 @@ func (c *SentencesUnitCollection) Find(key string) (*SentencesUnit, bool) {
 		}
 	}
 	return nil, false
+}
+
+// CategoryUnit is unit of category collection, stored in categories.json file
+type CategoryUnit struct {
+	database.Category
+	Path string `json:"path"`
+}
+
+// CategoryUnitCollection is collection of category unit
+type CategoryUnitCollection []CategoryUnit
+
+// DeepCopy deep copy from source
+func (p CategoryUnitCollection) DeepCopy(collection CategoryUnitCollection) CategoryUnitCollection {
+	tmp := CategoryUnitCollection{}
+	for _, v := range collection {
+		tmp = append(tmp, CategoryUnit{
+			Category: database.Category{
+				ID:        v.ID,
+				Name:      v.Name,
+				Desc:      v.Desc,
+				Key:       v.Key,
+				CreatedAt: v.CreatedAt,
+				UpdatedAt: v.UpdatedAt,
+			},
+			Path: v.Path,
+		})
+	}
+	return tmp
+}
+
+// ImportFrom can convert []category to []categoryUnit
+func (p *CategoryUnitCollection) ImportFrom(c []database.Category) {
+	for _, v := range c {
+		*p = append(*p, CategoryUnit{
+			Category: v,
+			Path:     fmt.Sprintf("./sentences/%s.json", v.Key),
+		})
+	}
 }

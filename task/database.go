@@ -3,39 +3,15 @@ package task
 import (
 	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
 	"github.com/hitokoto-osc/hitokoto-sentence-generator/database"
-	"time"
 )
 
-type category struct {
-	ID        uint      `db:"id"`
-	Name      string    `db:"name"`
-	Desc      string    `db:"desc"`
-	Key       string    `db:"key"`
-	CreatedAt time.Time `db:"created_at"`
-	UpdatedAt time.Time `db:"updated_at"`
-}
-
-type sentence struct {
-	ID         uint    `db:"id"`
-	UUID       string  `db:"uuid"`
-	Hitokoto   string  `db:"hitokoto"`
-	Type       string  `db:"type"`
-	From       string  `db:"from"`
-	FromWho    *string `db:"from_who"`
-	Creator    string  `db:"creator"`
-	CreatorUID uint    `db:"creator_uid"`
-	Reviewer   uint    `db:"reviewer"`
-	CommitFrom string  `db:"commit_from"`
-	CreatedAt  int64   `db:"created_at"`
-}
-
 type bundleSentence struct {
-	sentence
-	Length uint
+	database.Sentence
+	Length uint `json:"length"`
 }
 
 // getCategories fetch categories from remote source set
-func getCategories() ([]category, error) {
+func getCategories() ([]database.Category, error) {
 	col := database.
 		Session.
 		Collection(config.Database.CategoryTableName)
@@ -43,13 +19,13 @@ func getCategories() ([]category, error) {
 		return nil, err
 	}
 	res := col.Find()
-	var result []category
+	var result []database.Category
 	err := res.All(&result)
 	return result, err
 }
 
 // getCategories fetch sentences from remote source set
-func getSentences() ([]sentence, error) {
+func getSentences() ([]database.Sentence, error) {
 	col := database.
 		Session.
 		Collection(config.Database.SentencesTableName)
@@ -57,7 +33,7 @@ func getSentences() ([]sentence, error) {
 		return nil, err
 	}
 	res := col.Find()
-	var result []sentence
+	var result []database.Sentence
 	err := res.All(&result)
 	return result, err
 }

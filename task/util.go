@@ -5,48 +5,39 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
-	"path/filepath"
+	"github.com/hitokoto-osc/hitokoto-sentence-generator/database"
+	"github.com/hitokoto-osc/hitokoto-sentence-generator/utils"
+	"strconv"
 	"unicode/utf8"
 )
 
-type categoryUnit struct {
-	category
-	Path string
-}
+type categorySentenceBundleMap map[string]bundleSentenceCollection
 
-type categoryUnitCollection []categoryUnit
-
-// ImportFrom can convert []category to []categoryUnit
-func (p *categoryUnitCollection) ImportFrom(c []category) {
-	for _, v := range c {
-		*p = append(*p, categoryUnit{
-			category: v,
-			Path:     filepath.Join(config.Core.Workdir, fmt.Sprintf("./sentences/%s.json", v.Key)),
-		})
+// DeepCopy deep copy from source
+func (p categorySentenceBundleMap) DeepCopy(collection categorySentenceBundleMap) map[string]bundleSentenceCollection {
+	tmp := categorySentenceBundleMap{}
+	for k, v := range collection {
+		tmp[k] = bundleSentenceCollection{}.DeepCopy(v)
 	}
+	return tmp
 }
 
-func categorizeSentences(sentences []sentence) map[string]bundleSentenceCollection {
+func categorizeSentences(sentences []database.Sentence) map[string]bundleSentenceCollection {
 	result := map[string]bundleSentenceCollection{}
 	for _, sentence := range sentences {
 		if _, ok := result[sentence.Type]; !ok {
 			result[sentence.Type] = bundleSentenceCollection{}
 		}
 		result[sentence.Type] = append(result[sentence.Type], bundleSentence{
-			sentence: sentence,
+			Sentence: sentence,
 			Length:   uint(utf8.RuneCountInString(sentence.Hitokoto)),
 		})
 	}
 	return result
 }
 
-func getCategoryUnitHash(c categoryUnit) (string, error) {
-	result, err := json.Marshal(c)
-	if err != nil {
-		return "", err
-	}
-	hash := MD5(result)
+func getCategoryUnitHash(c utils.CategoryUnit) (string, error) {
+	hash := MD5([]byte(fmt.Sprintf("%s.%s.%s.%s.%s", strconv.Itoa(int(c.ID)), c.Name, c.Path, c.Key, c.Desc)))
 	return hex.EncodeToString(hash[:]), nil
 }
 

@@ -18,8 +18,13 @@ import (
 
 // GetGitAuth will return transport.AuthMethod interface by driver that configure in config file
 func GetGitAuth() (transport.AuthMethod, error) {
-	if config.Git.Driver == "git" {
-		return ssh.NewPublicKeys(config.Git.SSH.User, []byte(config.Git.SSH.PrivateKey), config.Git.SSH.Password)
+	if config.Git.Driver == "ssh" {
+		auth, err := ssh.NewPublicKeys(config.Git.SSH.User, []byte(config.Git.SSH.PrivateKey), config.Git.SSH.Password)
+		if err != nil {
+			logging.Logger.Error(config.Git.SSH.PrivateKey)
+			return nil, errors.WithMessage(err, "SSHKeyParseError")
+		}
+		return auth, nil
 	} else if config.Git.Driver == "http" {
 		return &http.BasicAuth{
 			Username: config.Git.HTTP.User,
@@ -31,12 +36,12 @@ func GetGitAuth() (transport.AuthMethod, error) {
 
 // SyncRepository will force sync local repository correspond to remote repository
 func SyncRepository() error {
-	logging.Logger.Info("open local repository...")
+	logging.Logger.Info("Open local repository...")
 	repository, err := git.PlainOpen(config.Core.Workdir)
 	if err != nil {
 		return err
 	}
-	logging.Logger.Info("fetch from remote repository...")
+	logging.Logger.Info("Fetch from remote repository...")
 	auth, err := GetGitAuth()
 	if err != nil {
 		return err
@@ -46,9 +51,13 @@ func SyncRepository() error {
 		Auth:       auth,
 		Progress:   os.Stdout,
 	}); err != nil {
+		if err.Error() == "already up-to-date" {
+			logging.Logger.Info("Local repository is up-to-date.")
+			return nil
+		}
 		return err
 	}
-	logging.Logger.Info("reset local records to latest remote version...")
+	logging.Logger.Info("Reset local records to latest remote version...")
 	latestCommit, err := repository.Reference(plumbing.ReferenceName("refs/remotes/origin/"+config.Git.Branch), true)
 	if err != nil {
 		return err
