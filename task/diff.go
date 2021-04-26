@@ -1,12 +1,16 @@
 package task
 
-func compareAndUpdateCategories(local, remote *categoryUnitCollection) (bool, error) {
+import (
+	"github.com/hitokoto-osc/hitokoto-sentence-generator/utils"
+)
+
+func compareAndUpdateCategories(local, remote *utils.CategoryUnitCollection) (bool, error) {
 	if len(*local) != len(*remote) {
 		local = remote
 		return true, nil
 	}
 	// 计算交集
-	collection := categoryUnitCollection{}
+	collection := utils.CategoryUnitCollection{}
 	t := map[string]int{}
 	for _, v := range *local {
 		hash, err := getCategoryUnitHash(v)

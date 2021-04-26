@@ -14,8 +14,9 @@ var rootCmd = &cobra.Command{
 	Use:   "generator",
 	Short: "A lightweight and swift hitokoto sentences generator tool.",
 	Long: `A lightweight and swift hitokoto sentences generator tool. We provide these commands:
-	$ generator initSSH # Init SSH config
 	$ generator clone   # Clone remote repository
+	$ generator sync    # Sync repository
+	$ generator release # Release sentences bundle
 	$ generator start   # Start sync task`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:

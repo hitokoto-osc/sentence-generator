@@ -33,9 +33,9 @@ func initVersionData() (versionData *utils.VersionData, isExist bool, err error)
 	return versionData, true, nil
 }
 
-func initCategoriesData(isExist bool) (*categoryUnitCollection, error) {
+func initCategoriesData(isExist bool) (*utils.CategoryUnitCollection, error) {
 	if !isExist {
-		return &categoryUnitCollection{}, nil
+		return &utils.CategoryUnitCollection{}, nil
 	}
 	return getCurrentCategoriesList(versionData)
 }
@@ -48,13 +48,13 @@ func initSentencesMap(isExist bool) (*map[string]bundleSentenceCollection, int, 
 }
 
 // TODO: optimize exports
-// revive:disable:function-result-limit
-func fetchRemoteData() (categories *categoryUnitCollection, sentencesMap *map[string]bundleSentenceCollection, total int, err error) {
+//revive:disable:function-result-limit
+func fetchRemoteData() (categories *utils.CategoryUnitCollection, sentencesMap *map[string]bundleSentenceCollection, total int, err error) {
 	remoteCategoriesList, err := getCategories()
 	if err != nil {
 		return nil, nil, 0, err
 	}
-	categoriesList := categoryUnitCollection{}
+	categoriesList := utils.CategoryUnitCollection{}
 	categoriesList.ImportFrom(remoteCategoriesList)
 	remoteSentencesCollection, err := getSentences()
 	if err != nil {
@@ -65,12 +65,12 @@ func fetchRemoteData() (categories *categoryUnitCollection, sentencesMap *map[st
 	return &categoriesList, &remoteSentencesMap, total, nil
 }
 
-// revive:enable:function-result-limit
+//revive:enable:function-result-limit
 
-func generateBundle(categories *categoryUnitCollection, sentencesMap *map[string]bundleSentenceCollection, versionData *utils.VersionData) error {
+func generateBundle(categories *utils.CategoryUnitCollection, sentencesMap *map[string]bundleSentenceCollection, versionData *utils.VersionData) error {
 	logging.Logger.Info("Start generate sentences bundle.")
 	logging.Logger.Info("(1/3) Write Version lockfile...")
-	data, err := json.Marshal(*versionData)
+	data, err := json.MarshalIndent(*versionData, "", "  ")
 	if err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func generateBundle(categories *categoryUnitCollection, sentencesMap *map[string
 		return err
 	}
 	logging.Logger.Info("(2/3) Write Categories data...")
-	data, err = json.Marshal(*categories)
+	data, err = json.MarshalIndent(*categories, "", "  ")
 	if err != nil {
 		return err
 	}
@@ -88,7 +88,7 @@ func generateBundle(categories *categoryUnitCollection, sentencesMap *map[string
 	logging.Logger.Info("(3/3) Write Sentences data...")
 	for key, sentences := range *sentencesMap {
 		logging.Logger.Info(fmt.Sprintf("Write category(%s) sentences...", key))
-		data, err = json.Marshal(sentences)
+		data, err = json.MarshalIndent(sentences, "", "  ")
 		if err != nil {
 			return err
 		}
@@ -107,7 +107,7 @@ func generateBundle(categories *categoryUnitCollection, sentencesMap *map[string
 	return nil
 }
 
-func doBundleRelease(categories *categoryUnitCollection, sentencesMap *map[string]bundleSentenceCollection, versionData *utils.VersionData) error {
+func doBundleRelease(categories *utils.CategoryUnitCollection, sentencesMap *map[string]bundleSentenceCollection, versionData *utils.VersionData) error {
 	if err := generateBundle(categories, sentencesMap, versionData); err != nil {
 		return err
 	} // generate new build

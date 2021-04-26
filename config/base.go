@@ -48,7 +48,7 @@ func InitConfigDriver(cfgFile string, logger *zap.Logger) {
 				Error(),
 		)
 	} else {
-		logger.Info("Using config file:" + viper.ConfigFileUsed())
+		logger.Info("Using config file: " + viper.ConfigFileUsed())
 	}
 	if err := viper.UnmarshalKey("database", &Database); err != nil {
 		logger.Fatal(
