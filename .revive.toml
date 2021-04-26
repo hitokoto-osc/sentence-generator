@@ -3,7 +3,6 @@ severity = "error"
 confidence = 0.8
 errorCode = 1
 warningCode = 0
-
 [rule.blank-imports]
 [rule.context-as-argument]
 [rule.context-keys-type]
@@ -28,6 +27,7 @@ severity = "warning"
 arguments = [4]
 [rule.function-result-limit]
 arguments = [3]
+severity="warning"
 [rule.empty-block]
 [rule.confusing-naming]
 [rule.superfluous-else]
