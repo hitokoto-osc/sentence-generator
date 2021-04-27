@@ -56,7 +56,6 @@ dockers:
     image_templates:
       - "hitokoto/generator:latest"
       - "hitokoto/generator:{{ .Tag }}"
-      - "hitokoto/generator:{{ .Tag }}-{{ .Env.GO_VERSION }}"
       - "hitokoto/generator:v{{ .Major }}"
     dockerfile: Dockerfile
     use_buildx: true
