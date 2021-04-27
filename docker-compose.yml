@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  remark:
+    build: .
+    image: hitokoto/generator:latest
+    container_name: "hitokoto/generator"
+    hostname: "hitokoto_generator"
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+    environment:
+      - DATABASE_DRIVER=mysql
+      - DATABASE_HOST=127.0.0.1
+      - DATABASE_PORT=3303
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD
+      - DATABASE_DATABASE=hitokoto
+      - DATABASE_CATEGORY_TABLE_NAME=hitokoto_categories
+      - DATABASE_SENTENCES_TABLE_NAME=hitokoto_sentence
+      - CORE_WORKDIR=./data/sentences
+      - CORE_REMOTE_REPOSITORY=git@github.com:hitokoto-osc/sentences-bundle.git
+      - CORE_INTERVAL=1800
+      - GIT_NAME="Elf Yamada"
+      - GIT_EMAIL=a632079@live.com
+      - GIT_BRANCH=master
+      - GIT_DRIVER=ssh # ssh or http
+      # SSH config block
+      - GIT_SSH_PRIVATE_KEY
+      - GIT_SSH_PASSWORD
+      - GIT_SSH_USER=git
+      # Common user config block
+      - GIT_HTTP_USER
+      - GIT_HTTP_PASSWORD
+    volumes:
+      - ./data:/srv/app/data
