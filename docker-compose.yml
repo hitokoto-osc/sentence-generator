@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  remark:
+  generator:
     build: .
     image: hitokoto/generator:latest
     container_name: "hitokoto/generator"
