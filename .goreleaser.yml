@@ -35,7 +35,7 @@ archives:
       - goos: windows
         format: zip
     files:
-      - README.md
+      - Readme.md
       - data/config.example.toml
 checksum:
   name_template: 'checksums.txt'
