@@ -8,6 +8,7 @@ before:
     - go mod download
     # you may remove this if you don't need go generate
     - go generate ./...
+project_name: generator
 builds:
   - env:
       - CGO_ENABLED=0
@@ -35,7 +36,7 @@ archives:
         format: zip
     files:
       - README.md
-      - config.example.toml
+      - data/config.example.toml
 checksum:
   name_template: 'checksums.txt'
 snapshot:
@@ -46,3 +47,25 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+docker:
+  - goos: linux
+      # GOARCH of the built binaries/packages that should be used.
+    goarch: amd64
+      # GOARM of the built binaries/packages that should be used.
+    goarm: ''
+    image_templates:
+      - "hitokoto/generator:latest"
+      - "hitokoto/generator:{{ .Tag }}"
+      - "hitokoto/generator:{{ .Tag }}-{{ .Env.GO_VERSION }}"
+      - "hitokoto/generator:v{{ .Major }}"
+    dockerfile: Dockerfile
+    use_buildx: true
+    build_flag_templates:
+      - "--pull"
+      - "--label=cn.hitokoto.generator.image.created={{.Date}}"
+      - "--label=cn.hitokoto.generator.image.title={{.ProjectName}}"
+      - "--label=cn.hitokoto.generator.image.revision={{.FullCommit}}"
+      - "--label=cn.hitokoto.generator.image.version={{.Version}}"
+      - "--platform=linux/arm64"
+    extra_files:
+      - data/config.example.toml
