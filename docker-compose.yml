@@ -4,7 +4,7 @@ services:
   generator:
     build: .
     image: hitokoto/generator:latest
-    container_name: "hitokoto/generator"
+    container_name: "hitokoto_generator"
     hostname: "hitokoto_generator"
     restart: always
     logging:
@@ -37,4 +37,4 @@ services:
       - GIT_HTTP_USER
       - GIT_HTTP_PASSWORD
     volumes:
-      - ./data:/srv/app/data
+      - ./data:/src/app/data
