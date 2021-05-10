@@ -21,7 +21,7 @@ services:
       - DATABASE_PASSWORD
       - DATABASE_DATABASE=hitokoto
       - DATABASE_CATEGORY_TABLE_NAME=hitokoto_categories
-      - DATABASE_SENTENCES_TABLE_NAME=hitokoto_sentence
+      - DATABASE_SENTENCES_TABLE_NAME=hitokoto_sentences
       - CORE_WORKDIR=./data/sentences
       - CORE_REMOTE_REPOSITORY=git@github.com:hitokoto-osc/sentences-bundle.git
       - CORE_INTERVAL=1800
