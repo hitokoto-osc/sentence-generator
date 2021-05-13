@@ -17,6 +17,7 @@ var startCmd = &cobra.Command{
 	$ generator task
 It will sync dataset and generate bundle.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		defer logging.Logger.Sync()
 		checkLockFile()
 		err := database.Connect()
 		if err != nil {
@@ -31,6 +32,7 @@ func init() {
 }
 
 func checkLockFile() {
+	defer logging.Logger.Sync()
 	if _, err := os.Stat("./data/init.lock"); err != nil {
 		if os.IsNotExist(err) {
 			// File is not exist

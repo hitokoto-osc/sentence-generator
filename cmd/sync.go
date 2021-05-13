@@ -14,6 +14,7 @@ var syncCmd = &cobra.Command{
 	$ generator sync
 It will do git fetch and git reset --hard origin/master command`,
 	Run: func(cmd *cobra.Command, args []string) {
+		defer logging.Logger.Sync()
 		if err := utils.SyncRepository(); err != nil {
 			logging.Logger.Fatal(err.Error())
 		}

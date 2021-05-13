@@ -18,6 +18,7 @@ import (
 
 // GetGitAuth will return transport.AuthMethod interface by driver that configure in config file
 func GetGitAuth() (transport.AuthMethod, error) {
+	defer logging.Logger.Sync()
 	if config.Git.Driver == "ssh" {
 		auth, err := ssh.NewPublicKeys(config.Git.SSH.User, []byte(config.Git.SSH.PrivateKey), config.Git.SSH.Password)
 		if err != nil {
@@ -36,6 +37,7 @@ func GetGitAuth() (transport.AuthMethod, error) {
 
 // SyncRepository will force sync local repository correspond to remote repository
 func SyncRepository() error {
+	defer logging.Logger.Sync()
 	logging.Logger.Info("Open local repository...")
 	repository, err := git.PlainOpen(config.Core.Workdir)
 	if err != nil {
@@ -74,6 +76,7 @@ func SyncRepository() error {
 
 // CommitAndPushRepository will commit all local changes and push to remote repository
 func CommitAndPushRepository() error {
+	defer logging.Logger.Sync()
 	logging.Logger.Info("Open local repository...")
 	repository, err := git.PlainOpen(config.Core.Workdir)
 	if err != nil {
@@ -124,6 +127,7 @@ func CommitAndPushRepository() error {
 
 // ReleaseAndPushRepository will create a git tag and push tags to remote repository
 func ReleaseAndPushRepository() error {
+	defer logging.Logger.Sync()
 	logging.Logger.Info("Open local repository...")
 	repository, err := git.PlainOpen(config.Core.Workdir)
 	if err != nil {

@@ -20,6 +20,7 @@ var cloneCmd = &cobra.Command{
     $ generator clone
 It will clone remote repository to specific path.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		defer logging.Logger.Sync()
 		logging.Logger.Info(fmt.Sprintf("Start Clone repository(%s)...", config.Core.RemoteRepository))
 		auth, err := utils.GetGitAuth()
 		if err != nil {

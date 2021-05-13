@@ -11,6 +11,7 @@ var Session db.Session
 
 // Connect connect to database
 func Connect() (err error) {
+	defer logging.Logger.Sync()
 	switch config.Database.Driver {
 	case "mysql":
 		err = mysqlConnect()
