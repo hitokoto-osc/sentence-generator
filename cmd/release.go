@@ -20,12 +20,16 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		defer logging.Logger.Sync()
-		logging.Logger.Info("Commit and push changes...")
-		if err := utils.CommitAndPushRepository(); err != nil {
+		logging.Logger.Info("Commit changes...")
+		if err := utils.CommitRepository(); err != nil {
 			log.Fatal(err.Error())
 		}
-		logging.Logger.Info("CreateAndPush tag changes...")
-		if err := utils.ReleaseAndPushRepository(); err != nil {
+		logging.Logger.Info("Create tag changes...")
+		if err := utils.ReleaseRepository(); err != nil {
+			log.Fatal(err.Error())
+		}
+		logging.Logger.Info("Push...")
+		if err := utils.Push(); err != nil {
 			log.Fatal(err.Error())
 		}
 		logging.Logger.Info("Do release successfully.")

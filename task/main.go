@@ -112,8 +112,11 @@ func doBundleRelease(categories *utils.CategoryUnitCollection, sentencesMap *map
 	if err := generateBundle(categories, sentencesMap, versionData); err != nil {
 		return err
 	} // generate new build
-	if err := utils.CommitAndPushRepository(); err != nil {
+	if err := utils.CommitRepository(); err != nil {
 		return err
 	}
-	return utils.ReleaseAndPushRepository()
+	if err := utils.ReleaseRepository(); err != nil {
+		return err
+	}
+	return utils.Push()
 }

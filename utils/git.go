@@ -74,8 +74,8 @@ func SyncRepository() error {
 	})
 }
 
-// CommitAndPushRepository will commit all local changes and push to remote repository
-func CommitAndPushRepository() error {
+// CommitRepository will commit all local changes
+func CommitRepository() error {
 	defer logging.Logger.Sync()
 	logging.Logger.Info("Open local repository...")
 	repository, err := git.PlainOpen(config.Core.Workdir)
@@ -110,23 +110,11 @@ func CommitAndPushRepository() error {
 			},
 		},
 	)
-	if err != nil {
-		return err
-	}
-	logging.Logger.Info("Push to remote source...")
-	auth, err := GetGitAuth()
-	if err != nil {
-		return err
-	}
-	return repository.Push(&git.PushOptions{
-		RemoteName: "origin",
-		Auth:       auth,
-		Progress:   os.Stdout,
-	})
+	return err
 }
 
-// ReleaseAndPushRepository will create a git tag and push tags to remote repository
-func ReleaseAndPushRepository() error {
+// ReleaseRepository will create a git tag
+func ReleaseRepository() error {
 	defer logging.Logger.Sync()
 	logging.Logger.Info("Open local repository...")
 	repository, err := git.PlainOpen(config.Core.Workdir)
@@ -143,16 +131,40 @@ func ReleaseAndPushRepository() error {
 		return err
 	}
 	_, err = repository.CreateTag(fmt.Sprintf("v%s", version), ref.Hash(), &git.CreateTagOptions{
+		Tagger: &object.Signature{
+			Name:  config.Git.Name,
+			Email: config.Git.Email,
+			When:  time.Now(),
+		},
 		Message: fmt.Sprintf("release v%s", version),
 	})
+	return err
+}
+
+// Push will push local changes(includes tags) to remote repository
+func Push() error {
+	defer logging.Logger.Sync()
+	logging.Logger.Info("Open local repository...")
+	repository, err := git.PlainOpen(config.Core.Workdir)
 	if err != nil {
 		return err
 	}
-	logging.Logger.Info("Pushing...")
+	logging.Logger.Debug("Get Auth instance...")
 	auth, err := GetGitAuth()
 	if err != nil {
 		return err
 	}
+
+	logging.Logger.Info("Pushing commits...")
+	if err := repository.Push(&git.PushOptions{
+		RemoteName: "origin",
+		Auth:       auth,
+		Progress:   os.Stdout,
+	}); err != nil {
+		return err
+	}
+
+	logging.Logger.Info("Pushing Tags...")
 	return repository.Push(&git.PushOptions{
 		RemoteName: "origin",
 		Progress:   os.Stdout,
