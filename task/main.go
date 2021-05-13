@@ -42,7 +42,7 @@ func initCategoriesData(isExist bool) (*utils.CategoryUnitCollection, error) {
 
 func initSentencesMap(isExist bool) (*map[string]bundleSentenceCollection, int, error) {
 	if !isExist {
-		return nil, 0, nil
+		return &map[string]bundleSentenceCollection{}, 0, nil
 	}
 	return getCurrentSentencesMap(categoriesData)
 }
