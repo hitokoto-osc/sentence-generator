@@ -18,6 +18,7 @@ var (
 
 // Start task loop
 func Start() {
+	defer logging.Logger.Sync()
 	logging.Logger.Info("Prepare Task environment...")
 	if err := initTaskEnv(); err != nil {
 		logging.Logger.Fatal(errors.WithMessage(err, "Can't init task env").Error())
@@ -37,6 +38,7 @@ func Start() {
 }
 
 func initTaskEnv() error {
+	defer logging.Logger.Sync()
 	var (
 		isExist bool
 		err     error
@@ -66,6 +68,7 @@ func initTaskEnv() error {
 
 // Task is the main runner
 func Task() error {
+	defer logging.Logger.Sync()
 	logging.Logger.Info("Start Task. Initialize scoped env...")
 	// 局部使用（深拷贝）
 	scopedCurrentCategories := utils.CategoryUnitCollection{}.DeepCopy(*categoriesData)
@@ -91,6 +94,7 @@ func Task() error {
 		for _, category := range *categoriesData {
 			remoteSentences := (*remoteSentencesPointer)[category.Key]
 			localSentences, ok := scopedCurrentSentences[category.Key]
+			logging.Logger.Debug("Comparing category: " + category.Key)
 			if !ok {
 				scopedCurrentSentences[category.Key] = remoteSentences
 				isSentencesUpdated = true
@@ -104,6 +108,7 @@ func Task() error {
 				if err = scopedCurrentVersionData.UpdateSentenceRecord(category.Key); err != nil {
 					return err
 				}
+				isSentencesUpdated = true
 			}
 		}
 		if !isSentencesUpdated {

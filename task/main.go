@@ -68,6 +68,7 @@ func fetchRemoteData() (categories *utils.CategoryUnitCollection, sentencesMap *
 //revive:enable:function-result-limit
 
 func generateBundle(categories *utils.CategoryUnitCollection, sentencesMap *map[string]bundleSentenceCollection, versionData *utils.VersionData) error {
+	defer logging.Logger.Sync()
 	logging.Logger.Info("Start generate sentences bundle.")
 	logging.Logger.Info("(1/3) Write Version lockfile...")
 	data, err := json.MarshalIndent(*versionData, "", "  ")

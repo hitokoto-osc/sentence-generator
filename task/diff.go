@@ -1,10 +1,13 @@
 package task
 
 import (
+	"fmt"
+	"github.com/hitokoto-osc/hitokoto-sentence-generator/logging"
 	"github.com/hitokoto-osc/hitokoto-sentence-generator/utils"
 )
 
 func compareAndUpdateCategories(local, remote *utils.CategoryUnitCollection) (bool, error) {
+	defer logging.Logger.Sync()
 	if len(*local) != len(*remote) {
 		local = remote
 		return true, nil
@@ -14,6 +17,7 @@ func compareAndUpdateCategories(local, remote *utils.CategoryUnitCollection) (bo
 	t := map[string]int{}
 	for _, v := range *local {
 		hash, err := getCategoryUnitHash(v)
+		logging.Logger.Debug(fmt.Sprintf("Local exist: %s, hash: %s", v.Key, hash))
 		if err != nil {
 			return false, err
 		}
@@ -21,10 +25,12 @@ func compareAndUpdateCategories(local, remote *utils.CategoryUnitCollection) (bo
 	}
 	for _, v := range *remote {
 		hash, err := getCategoryUnitHash(v)
+		logging.Logger.Debug(fmt.Sprintf("Remote exist: %s, hash: %s", v.Key, hash))
 		if err != nil {
 			return false, err
 		}
 		if _, ok := t[hash]; ok {
+			logging.Logger.Debug(fmt.Sprintf("Category %s exist in both", v.Key))
 			collection = append(collection, v)
 		}
 	}
@@ -37,6 +43,7 @@ func compareAndUpdateCategories(local, remote *utils.CategoryUnitCollection) (bo
 }
 
 func compareAndUpdateCategorySentences(local, remote *bundleSentenceCollection) (bool, error) {
+	defer logging.Logger.Sync()
 	if len(*local) != len(*remote) {
 		local = remote
 		return true, nil
@@ -46,6 +53,7 @@ func compareAndUpdateCategorySentences(local, remote *bundleSentenceCollection) 
 	t := map[string]int{}
 	for _, v := range *local {
 		hash, err := getBundleSentenceHash(v)
+		logging.Logger.Debug(fmt.Sprintf("Local sentence: %+v \nhash: %s", v, hash))
 		if err != nil {
 			return false, err
 		}
@@ -53,10 +61,12 @@ func compareAndUpdateCategorySentences(local, remote *bundleSentenceCollection) 
 	}
 	for _, v := range *remote {
 		hash, err := getBundleSentenceHash(v)
+		logging.Logger.Debug(fmt.Sprintf("Remote sentence: %+v \nhash: %s", v, hash))
 		if err != nil {
 			return false, err
 		}
 		if _, ok := t[hash]; ok {
+			logging.Logger.Debug(fmt.Sprintf("Sentence %s exist in both", hash))
 			collection = append(collection, v)
 		}
 	}

@@ -20,6 +20,8 @@ func InitLogger() {
 		c = zap.NewProductionConfig()
 	}
 	c.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	c.OutputPaths = []string{"stdout"}
+	c.ErrorOutputPaths = []string{"stderr"}
 	Logger, err = c.Build()
 	if err != nil {
 		panic(errors.WithMessage(err, "can't initialize logger driver, program exited."))
