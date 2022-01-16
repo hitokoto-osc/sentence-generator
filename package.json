@@ -21,7 +21,7 @@
     "@commitlint/prompt-cli": "12.1.1",
     "commitizen": "4.2.3",
     "cz-conventional-changelog": "3.3.0",
-    "husky": "6.0.0",
+    "husky": "7.0.4",
     "lint-staged": "10.5.4",
     "remark-cli": "9.0.0",
     "remark-preset-lint-recommended": "5.0.0"
