@@ -5,19 +5,20 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/database"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/utils"
 	"strconv"
 	"unicode/utf8"
+
+	"github.com/hitokoto-osc/sentence-generator/database"
+	"github.com/hitokoto-osc/sentence-generator/utils"
 )
 
 type categorySentenceBundleMap map[string]bundleSentenceCollection
 
-// DeepCopy deep copy from source
-func (p categorySentenceBundleMap) DeepCopy(collection categorySentenceBundleMap) map[string]bundleSentenceCollection {
+// deepCopyCategorySentenceBundleMap deep copy from source
+func deepCopyCategorySentenceBundleMap(collection categorySentenceBundleMap) map[string]bundleSentenceCollection {
 	tmp := categorySentenceBundleMap{}
 	for k, v := range collection {
-		tmp[k] = bundleSentenceCollection{}.DeepCopy(v)
+		tmp[k] = deepCopyBundleSentenceCollection(v)
 	}
 	return tmp
 }

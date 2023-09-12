@@ -1,7 +1,12 @@
+// Package utils is intended to provide some useful functions
 package utils
 
 import (
 	"fmt"
+	"github.com/cockroachdb/errors"
+	"os"
+	"time"
+
 	"github.com/go-git/go-git/v5"
 	gitConfig "github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -9,11 +14,8 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/transport"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/logging"
-	"github.com/pkg/errors"
-	"os"
-	"time"
+	"github.com/hitokoto-osc/sentence-generator/config"
+	"github.com/hitokoto-osc/sentence-generator/logging"
 )
 
 // GetGitAuth will return transport.AuthMethod interface by driver that configure in config file
@@ -23,7 +25,7 @@ func GetGitAuth() (transport.AuthMethod, error) {
 		auth, err := ssh.NewPublicKeys(config.Git.SSH.User, []byte(config.Git.SSH.PrivateKey), config.Git.SSH.Password)
 		if err != nil {
 			logging.Logger.Error(config.Git.SSH.PrivateKey)
-			return nil, errors.WithMessage(err, "SSHKeyParseError")
+			return nil, errors.WithStack(errors.WithMessage(err, "SSHKeyParseError"))
 		}
 		return auth, nil
 	} else if config.Git.Driver == "http" {
@@ -32,7 +34,7 @@ func GetGitAuth() (transport.AuthMethod, error) {
 			Password: config.Git.HTTP.Password,
 		}, nil
 	}
-	return nil, errors.New("unsupported auth mode: " + config.Git.Driver)
+	return nil, errors.WithStack(errors.New("unsupported auth mode: " + config.Git.Driver))
 }
 
 // SyncRepository will force sync local repository correspond to remote repository

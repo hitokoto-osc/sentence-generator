@@ -1,5 +1,5 @@
-PROJECT_NAME := "hitokoto-sentence-generator"
-PROJECT_PATH := "github.com/hitokoto-osc/hitokoto-sentence-generator"
+PROJECT_NAME := "@hitokoto/sentence-generator"
+PROJECT_PATH := "github.com/hitokoto-osc/sentence-generator"
 PKG := "$(PROJECT_PATH)"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
@@ -11,7 +11,7 @@ all:
 
 get-tools:
 	@echo Installing tools...
-	go get -u github.com/mgechev/revive
+	go install github.com/mgechev/revive@latest
 
 dep: # get dependencies
 	@echo Installing Dependencies...

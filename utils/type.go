@@ -1,9 +1,11 @@
+// Package utils is intended to provide some useful functions
 package utils
 
 import (
 	"fmt"
-	"github.com/blang/semver/v4"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/database"
+	"github.com/Masterminds/semver/v3"
+
+	"github.com/hitokoto-osc/sentence-generator/database"
 )
 
 // SentencesUnit  is a unit of VersionData SentencesUnitCollection
@@ -26,8 +28,8 @@ type VersionData struct {
 	Sentences SentencesUnitCollection `json:"sentences"`
 }
 
-// DeepCopy deep copy from source
-func (v VersionData) DeepCopy(data VersionData) VersionData {
+// DeepCopyVersionData deep copy from source
+func DeepCopyVersionData(data VersionData) VersionData {
 	return VersionData{
 		ProtocolVersion: data.ProtocolVersion,
 		BundleVersion:   data.BundleVersion,
@@ -39,16 +41,13 @@ func (v VersionData) DeepCopy(data VersionData) VersionData {
 			Path:      data.Categories.Path,
 			Timestamp: data.Categories.Timestamp,
 		},
-		Sentences: SentencesUnitCollection{}.DeepCopy(data.Sentences),
+		Sentences: DeepCopySentencesUnitCollection(data.Sentences),
 	}
 }
 
 // StepVersion will increase patch version
 func (v *VersionData) StepVersion() error {
-	version := semver.MustParse(v.BundleVersion)
-	if err := version.IncrementPatch(); err != nil {
-		return err
-	}
+	version := semver.MustParse(v.BundleVersion).IncPatch()
 	v.BundleVersion = version.String()
 	return nil
 }
@@ -89,8 +88,8 @@ func (v *VersionData) UpdateSentenceRecord(categoryKey string) error {
 // SentencesUnitCollection is a collection of SentencesUnit
 type SentencesUnitCollection []SentencesUnit
 
-// DeepCopy deep copy from source
-func (c SentencesUnitCollection) DeepCopy(s SentencesUnitCollection) SentencesUnitCollection {
+// DeepCopySentencesUnitCollection deep copy from source
+func DeepCopySentencesUnitCollection(s SentencesUnitCollection) SentencesUnitCollection {
 	tmp := SentencesUnitCollection{}
 	for _, v := range s {
 		tmp = append(tmp, SentencesUnit{
@@ -132,8 +131,8 @@ type CategoryUnit struct {
 // CategoryUnitCollection is collection of category unit
 type CategoryUnitCollection []CategoryUnit
 
-// DeepCopy deep copy from source
-func (p CategoryUnitCollection) DeepCopy(collection CategoryUnitCollection) CategoryUnitCollection {
+// DeepCopyCategoryUnitCollection deep copy from source
+func DeepCopyCategoryUnitCollection(collection CategoryUnitCollection) CategoryUnitCollection {
 	tmp := CategoryUnitCollection{}
 	for _, v := range collection {
 		tmp = append(tmp, CategoryUnit{

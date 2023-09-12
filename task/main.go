@@ -3,11 +3,12 @@ package task
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/logging"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/utils"
 	"os"
 	"path/filepath"
+
+	"github.com/hitokoto-osc/sentence-generator/config"
+	"github.com/hitokoto-osc/sentence-generator/logging"
+	"github.com/hitokoto-osc/sentence-generator/utils"
 )
 
 func initVersionData() (versionData *utils.VersionData, isExist bool, err error) {
@@ -48,6 +49,7 @@ func initSentencesMap(isExist bool) (*map[string]bundleSentenceCollection, int, 
 }
 
 // TODO: optimize exports
+//
 //revive:disable:function-result-limit
 func fetchRemoteData() (categories *utils.CategoryUnitCollection, sentencesMap *map[string]bundleSentenceCollection, total int, err error) {
 	remoteCategoriesList, err := getCategories()

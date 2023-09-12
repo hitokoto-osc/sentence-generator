@@ -14,7 +14,7 @@ type Category struct {
 
 // Sentence is the database structure
 type Sentence struct {
-	ID         uint    `db:"id" json:"id"  json:"id"`
+	ID         uint    `db:"id" json:"id"`
 	UUID       string  `db:"uuid"  json:"uuid"`
 	Hitokoto   string  `db:"hitokoto"  json:"hitokoto"`
 	Type       string  `db:"type"  json:"type"`

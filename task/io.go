@@ -2,12 +2,13 @@ package task
 
 import (
 	"encoding/json"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/database"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/utils"
-	"github.com/pkg/errors"
+	"github.com/cockroachdb/errors"
 	"os"
 	"path/filepath"
+
+	"github.com/hitokoto-osc/sentence-generator/config"
+	"github.com/hitokoto-osc/sentence-generator/database"
+	"github.com/hitokoto-osc/sentence-generator/utils"
 )
 
 func isVersionFileExist() bool {
@@ -30,7 +31,7 @@ func getCurrentVersionData() (result *utils.VersionData, err error) {
 
 func getCurrentCategoriesList(version *utils.VersionData) (result *utils.CategoryUnitCollection, err error) {
 	if version == nil {
-		return nil, errors.New("version is nil")
+		return nil, errors.WithStack(errors.New("version is nil"))
 	}
 	var data []byte
 	data, err = os.ReadFile(filepath.Join(config.Core.Workdir, version.Categories.Path))
@@ -44,8 +45,8 @@ func getCurrentCategoriesList(version *utils.VersionData) (result *utils.Categor
 
 type bundleSentenceCollection []bundleSentence
 
-// DeepCopy deep copy from source
-func (p bundleSentenceCollection) DeepCopy(collection bundleSentenceCollection) bundleSentenceCollection {
+// deepCopyBundleSentenceCollection deep copy from source
+func deepCopyBundleSentenceCollection(collection bundleSentenceCollection) bundleSentenceCollection {
 	tmp := bundleSentenceCollection{}
 	for _, v := range collection {
 		tmp = append(tmp, bundleSentence{
@@ -70,7 +71,7 @@ func (p bundleSentenceCollection) DeepCopy(collection bundleSentenceCollection) 
 
 func getCurrentSentencesMap(categoriesList *utils.CategoryUnitCollection) (collection *map[string]bundleSentenceCollection, total int, err error) {
 	if categoriesList == nil {
-		return nil, 0, errors.New("categoriesList is nil")
+		return nil, 0, errors.WithStack(errors.New("categoriesList is nil"))
 	}
 	collection = &map[string]bundleSentenceCollection{} // init
 	for _, category := range *categoriesList {

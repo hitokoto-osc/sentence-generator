@@ -1,10 +1,12 @@
+// Package utils is intended to provide some useful functions
 package utils
 
 import (
 	"encoding/json"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
 	"os"
 	"path/filepath"
+
+	"github.com/hitokoto-osc/sentence-generator/config"
 )
 
 // GetBundleVersion Get bundle version by reading version lockfile

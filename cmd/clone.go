@@ -2,12 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/go-git/go-git/v5"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/logging"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/utils"
-	"github.com/pkg/errors"
+	"go.uber.org/zap"
 	"os"
+
+	"github.com/go-git/go-git/v5"
+	"github.com/hitokoto-osc/sentence-generator/config"
+	"github.com/hitokoto-osc/sentence-generator/logging"
+	"github.com/hitokoto-osc/sentence-generator/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -31,7 +32,7 @@ It will clone remote repository to specific path.`,
 			Progress: os.Stdout,
 			Auth:     auth,
 		}); err != nil {
-			logging.Logger.Fatal(errors.WithMessage(err, "can't clone repository successfully").Error())
+			logging.Logger.Fatal("can't clone repository successfully", zap.Error(err))
 		}
 		logging.Logger.Info("Clone repository successfully.")
 	},

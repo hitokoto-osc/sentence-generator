@@ -2,8 +2,9 @@ package task
 
 import (
 	"fmt"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/logging"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/utils"
+
+	"github.com/hitokoto-osc/sentence-generator/logging"
+	"github.com/hitokoto-osc/sentence-generator/utils"
 )
 
 func compareAndUpdateCategories(local, remote *utils.CategoryUnitCollection) (bool, error) {

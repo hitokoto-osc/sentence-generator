@@ -1,8 +1,9 @@
+// Package logging is intended to provide a global logger instance
 package logging
 
 import (
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
-	"github.com/pkg/errors"
+	"github.com/cockroachdb/errors"
+	"github.com/hitokoto-osc/sentence-generator/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -24,6 +25,13 @@ func InitLogger() {
 	c.ErrorOutputPaths = []string{"stderr"}
 	Logger, err = c.Build()
 	if err != nil {
-		panic(errors.WithMessage(err, "can't initialize logger driver, program exited."))
+		panic(
+			errors.WithStack(
+				errors.WithMessage(
+					err,
+					"can't initialize logger driver, program exited",
+				),
+			),
+		)
 	}
 }

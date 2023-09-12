@@ -1,32 +1,65 @@
-module github.com/hitokoto-osc/hitokoto-sentence-generator
+module github.com/hitokoto-osc/sentence-generator
 
-go 1.16
+go 1.21
 
 require (
-	github.com/Microsoft/go-winio v0.5.0 // indirect
-	github.com/blang/semver/v4 v4.0.0
-	github.com/fsnotify/fsnotify v1.4.9 // indirect
-	github.com/go-git/go-billy/v5 v5.2.0 // indirect
-	github.com/go-git/go-git/v5 v5.3.0
+	github.com/Masterminds/semver/v3 v3.2.1
+	github.com/cockroachdb/errors v1.11.1
+	github.com/go-git/go-git/v5 v5.8.1
+	github.com/spf13/cobra v1.7.0
+	github.com/spf13/viper v1.16.0
+	github.com/upper/db/v4 v4.6.0
+	go.uber.org/zap v1.25.0
+)
+
+require (
+	dario.cat/mergo v1.0.0 // indirect
+	github.com/ProtonMail/go-crypto v0.0.0-20230717121422-5aa5874ade95 // indirect
+	github.com/acomagu/bufpipe v1.0.4 // indirect
+	github.com/cloudflare/circl v1.3.3 // indirect
+	github.com/emirpasic/gods v1.18.1 // indirect
+	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
+	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
+	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
+	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
+	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
+	github.com/pjbgf/sha1cd v0.3.0 // indirect
+	github.com/segmentio/fasthash v1.0.3 // indirect
+	github.com/skeema/knownhosts v1.2.0 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/subosito/gotenv v1.4.2 // indirect
+	github.com/xanzy/ssh-agent v0.3.3 // indirect
+	golang.org/x/mod v0.9.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
+	gopkg.in/warnings.v0 v0.1.2 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
+
+require (
+	github.com/Microsoft/go-winio v0.6.1 // indirect
+	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect
+	github.com/cockroachdb/redact v1.1.5 // indirect
+	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/getsentry/sentry-go v0.24.0 // indirect
+	github.com/go-git/go-billy/v5 v5.4.1 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
-	github.com/kevinburke/ssh_config v1.1.0 // indirect
-	github.com/magiconair/properties v1.8.5 // indirect
-	github.com/mitchellh/mapstructure v1.4.1 // indirect
-	github.com/pelletier/go-toml v1.9.0 // indirect
-	github.com/pkg/errors v0.9.1
+	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/kevinburke/ssh_config v1.2.0 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
+	github.com/kr/text v0.2.0 // indirect
+	github.com/magiconair/properties v1.8.7 // indirect
+	github.com/mitchellh/mapstructure v1.5.0 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
-	github.com/spf13/afero v1.6.0 // indirect
-	github.com/spf13/cast v1.3.1 // indirect
-	github.com/spf13/cobra v1.1.3
+	github.com/spf13/afero v1.9.5 // indirect
+	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
-	github.com/spf13/viper v1.7.1
-	github.com/stretchr/testify v1.7.0 // indirect
-	github.com/upper/db/v4 v4.1.0
-	go.uber.org/multierr v1.6.0 // indirect
-	go.uber.org/zap v1.16.0
-	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b // indirect
-	golang.org/x/net v0.0.0-20210423184538-5f58ad60dda6 // indirect
-	golang.org/x/sys v0.0.0-20210511113859-b0526f3d8744 // indirect
-	golang.org/x/tools v0.1.1 // indirect
-	gopkg.in/ini.v1 v1.62.0 // indirect
+	go.uber.org/multierr v1.10.0 // indirect
+	golang.org/x/crypto v0.11.0 // indirect
+	golang.org/x/net v0.12.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/tools v0.6.0 // indirect
+	gopkg.in/ini.v1 v1.67.0 // indirect
 )

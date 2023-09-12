@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
 	"runtime"
+
+	"github.com/hitokoto-osc/sentence-generator/config"
 
 	"github.com/spf13/cobra"
 )

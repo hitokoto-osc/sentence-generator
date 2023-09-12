@@ -2,7 +2,8 @@ package database
 
 import (
 	"fmt"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
+
+	"github.com/hitokoto-osc/sentence-generator/config"
 	"github.com/upper/db/v4/adapter/mysql"
 )
 

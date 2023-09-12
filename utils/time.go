@@ -1,3 +1,4 @@
+// Package utils is intended to provide some useful functions
 package utils
 
 import "time"

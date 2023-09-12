@@ -1,8 +1,9 @@
+// Package task contains some task functions
 package task
 
 import (
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/database"
+	"github.com/hitokoto-osc/sentence-generator/config"
+	"github.com/hitokoto-osc/sentence-generator/database"
 )
 
 type bundleSentence struct {

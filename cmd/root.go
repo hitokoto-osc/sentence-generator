@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/config"
-	"github.com/hitokoto-osc/hitokoto-sentence-generator/logging"
+	"github.com/hitokoto-osc/sentence-generator/config"
+	"github.com/hitokoto-osc/sentence-generator/logging"
 	"github.com/spf13/cobra"
 )
 
