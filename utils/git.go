@@ -55,7 +55,7 @@ func SyncRepository() error {
 		Auth:       auth,
 		Progress:   os.Stdout,
 	}); err != nil {
-		if err.Error() == "already up-to-date" {
+		if errors.Is(err, git.NoErrAlreadyUpToDate) {
 			logging.Logger.Info("Local repository is up-to-date.")
 			return nil
 		}

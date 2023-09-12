@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"go.uber.org/zap"
 	"os"
 
 	"github.com/hitokoto-osc/sentence-generator/database"
@@ -22,7 +23,7 @@ It will sync dataset and generate bundle.`,
 		checkLockFile()
 		err := database.Connect()
 		if err != nil {
-			logging.Logger.Fatal(err.Error())
+			logging.Logger.Fatal("failed to connect database", zap.Error(err))
 		}
 		task.Start()
 	},
