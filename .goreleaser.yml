@@ -54,9 +54,9 @@ dockers:
     # GOARM of the built binaries/packages that should be used.
     goarm: ''
     image_templates:
-      - "hitokoto/moe:latest"
-      - "hitokoto/moe:{{ .Tag }}"
-      - "hitokoto/moe:v{{ .Major }}"
+      - "hitokoto/{{.ProjectName}}:latest"
+      - "hitokoto/{{.ProjectName}}:{{ .Tag }}"
+      - "hitokoto/{{.ProjectName}}:v{{ .Major }}"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
