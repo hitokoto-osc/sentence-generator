@@ -106,3 +106,6 @@ data/init.lock
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+# node
+node_modules/
