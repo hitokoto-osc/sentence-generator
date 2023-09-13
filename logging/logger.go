@@ -17,10 +17,10 @@ func InitLogger() {
 	var c zap.Config
 	if config.Debug {
 		c = zap.NewDevelopmentConfig()
+		c.EncoderConfig.EncodeLevel = zapcore.LowercaseColorLevelEncoder
 	} else {
 		c = zap.NewProductionConfig()
 	}
-	c.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	c.OutputPaths = []string{"stdout"}
 	c.ErrorOutputPaths = []string{"stderr"}
 	Logger, err = c.Build()
@@ -34,4 +34,5 @@ func InitLogger() {
 			),
 		)
 	}
+	zap.ReplaceGlobals(Logger)
 }
