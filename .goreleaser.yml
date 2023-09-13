@@ -49,22 +49,28 @@ changelog:
       - '^test:'
 dockers:
   - goos: linux
-      # GOARCH of the built binaries/packages that should be used.
+    # GOARCH of the built binaries/packages that should be used.
     goarch: amd64
-      # GOARM of the built binaries/packages that should be used.
+    # GOARM of the built binaries/packages that should be used.
     goarm: ''
     image_templates:
-      - "hitokoto/generator:latest"
-      - "hitokoto/generator:{{ .Tag }}"
-      - "hitokoto/generator:v{{ .Major }}"
+      - "hitokoto/moe:latest"
+      - "hitokoto/moe:{{ .Tag }}"
+      - "hitokoto/moe:v{{ .Major }}"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
       - "--pull"
-      - "--label=cn.hitokoto.generator.image.created={{.Date}}"
-      - "--label=cn.hitokoto.generator.image.title={{.ProjectName}}"
-      - "--label=cn.hitokoto.generator.image.revision={{.FullCommit}}"
-      - "--label=cn.hitokoto.generator.image.version={{.Version}}"
-      - "--platform=linux/arm64"
+      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/hitokoto-osc/sentence-generator/master/Readme.md"
+      - "--label=io.artifacthub.package.logo-url=https://cdn.a632079.me/assets/images/hitokoto-logo-512x512.png"
+      - '--label=io.artifacthub.package.maintainers=[{"name":"a632079","email":"a632079@qq.com"}]'
+      - "--label=io.artifacthub.package.license=Apache-2.0"
+      - "--label=org.opencontainers.image.description=一言句子集生成器"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/amd64"
     extra_files:
       - data/config.example.toml
