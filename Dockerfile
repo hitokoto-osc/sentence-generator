@@ -8,6 +8,8 @@ ENV WORKDIR /app
 VOLUME $WORKDIR/data
 COPY data $WORKDIR/
 COPY generator $WORKDIR/
-ENTRYPOINT ["sh", "-c", "$WORKDIR/generator", "--", "start"]
+WORKDIR $WORKDIR
+
+ENTRYPOINT ["./generator", "start"]
 
 
