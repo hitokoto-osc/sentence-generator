@@ -42,7 +42,7 @@ require (
 	github.com/cockroachdb/redact v1.1.5 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
-	github.com/getsentry/sentry-go v0.24.0 // indirect
+	github.com/getsentry/sentry-go v0.24.1 // indirect
 	github.com/go-git/go-billy/v5 v5.5.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
