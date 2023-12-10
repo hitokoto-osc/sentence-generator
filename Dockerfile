@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.19
 ENV TZ Asia/Shanghai
 RUN apk add alpine-conf tzdata && \
     /sbin/setup-timezone -z Asia/Shanghai && \
