@@ -3,7 +3,7 @@ module github.com/hitokoto-osc/sentence-generator
 go 1.21
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.1
+	github.com/Masterminds/semver/v3 v3.3.1
 	github.com/cockroachdb/errors v1.11.1
 	github.com/go-git/go-git/v5 v5.9.0
 	github.com/spf13/cobra v1.7.0
